@@ -15,25 +15,66 @@ const currentWindSpeedElement = document.querySelector('[data-current-wind-speed
 const windDirectionText = document.querySelector('[data-wind-direction-text')
 const windDirectionArrow = document.querySelector('[data-wind-direction-arrow')
 
+const previousSolTemplate = document.querySelector('[data-previous-sol-template')
+const previousSolContainer= document.querySelector('[data-previous-sols')
+
+
 
 previousWeatherToggle.addEventListener('click', () => {
     previousWeather.classList.toggle('show-weather')
 })
 
+let selectedSolIndex
+
 getWeather().then(sols => {
     selectedSolIndex = sols.length - 1
-    console.log(sols)
+    displaySelectedSol(sols)
+    displayPreviousSols(sols)
 })
 
 function displaySelectedSol(sols) {
     const selectedSol = sols[selectedSolIndex]
     currentSolElement.innerText = selectedSol.sol
-    currentDateElement.innerText = selectedSol.date
+    currentDateElement.innerText = displayDate(selectedSol.date)
     currentTempHighElement.innerText = selectedSol.maxTemp
     currentTempLowElement.innerText = selectedSol.minTemp
     windSpeedElement.innerText = selectedSol.windSpeed
     windDirectionArrow.style.setProperty('--direction',
     `${selectedSol.windDirectionDegrees}deg`)
+    windDirectionText=innerText = 
+    selectedSol.windDirectionCardinal
+}
+
+function displayPreviousSols(sols) {
+    previousSolContainer.innerText= ''
+    sols.forEach((solDate, index) => {
+        const solContainer = previousSolTemplate.textContent.cloneNode(true)
+        solContainer.querySelector('[data-sol]').innerText = solData.sol
+        solContainer.querySelector(['data-date']).innerText = displayDate(solData.date)
+        solContainer.querySelector('[data-temp-high').innerText = displayTemperature(solData.maxTemp)
+        solContainer.querySelector('[data-temp-low').innerText = displayTemperature(solData.minTemp)
+        solContainer.querySelector('[data-select-button').addEventListener('click'.() => {
+            selectedSolIndex = index
+            displaySelectedSol(sols)
+        })
+        previousSolContainer.appendChild(solContainer)
+    })
+}
+
+
+function displayDate(date) {
+    return date.toLocaleDateString(
+        undefined,
+        { day: 'numeric', month: 'long'}
+    )
+}
+
+function displayTemperature(temperature) {
+    return Math.round(temperature)
+}
+
+function displaySpeed(speed) {
+    return Math.round(speed)
 }
 
 function getWeather(){

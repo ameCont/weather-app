@@ -7,6 +7,7 @@ api_key=${API_KEY}&feedtype=json&ver=1.0`
 //Change this if you need to
 const previousWeatherToggle = document.querySelector('.show-previous-weather');
 const previousWeather = document.querySelector('.previous-weather')
+const currentSolElement = document.querySelector('[data-current-sol')
 
 previousWeatherToggle.addEventListener('click', () => {
     previousWeather.classList.toggle('show-weather')
@@ -19,7 +20,7 @@ getWeather().then(sols => {
 
 function displaySelectedSol(sols) {
     const selectedSol = sols[selectedSolIndex]
-    console.log(selectedSol)
+    currentSolElement.innerText = selectedSol.sol
 }
 
 function getWeather(){

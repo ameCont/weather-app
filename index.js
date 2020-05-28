@@ -7,23 +7,23 @@ api_key=${API_KEY}&feedtype=json&ver=1.0`
 //Change this if you need to
 const previousWeatherToggle = document.querySelector('.show-previous-weather');
 const previousWeather = document.querySelector('.previous-weather')
-const currentSolElement = document.querySelector('[data-current-sol')
-const currentDateElement = document.querySelector('[data-current-date')
-const currentTempHighElement = document.querySelector('[data-current-temp-high')
-const currentTempLowElement = document.querySelector('[data-current-temp-low')
-const currentWindSpeedElement = document.querySelector('[data-current-wind-speed')
-const windDirectionText = document.querySelector('[data-wind-direction-text')
-const windDirectionArrow = document.querySelector('[data-wind-direction-arrow')
+const currentSolElement = document.querySelector('[data-current-sol]')
+const currentDateElement = document.querySelector('[data-current-date]')
+const currentTempHighElement = document.querySelector('[data-current-temp-high]')
+const currentTempLowElement = document.querySelector('[data-current-temp-low]')
+const windSpeedElement = document.querySelector('[data-wind-speed]')
+const windDirectionText = document.querySelector('[data-wind-direction-text]')
+const windDirectionArrow = document.querySelector('[data-wind-direction-arrow]')
 
-const previousSolTemplate = document.querySelector('[data-previous-sol-template')
-const previousSolContainer= document.querySelector('[data-previous-sols')
+const previousSolTemplate = document.querySelector('[data-previous-sol-template]')
+const previousSolContainer= document.querySelector('[data-previous-sols]')
 
-const unitToggle = document.querySelector(['data-unit-toggle'])
-const metricRadio = document.getElementById(['cel'])
-const imperialRadio = document.getElementById(['fah'])
+const unitToggle = document.querySelector('[data-unit-toggle]')
+const metricRadio = document.getElementById('cel')
+const imperialRadio = document.getElementById('fah')
 
 previousWeatherToggle.addEventListener('click', () => {
-    previousWeather.classList.toggle('show-weather')
+	previousWeather.classList.toggle('show-weather')
 })
 
 let selectedSolIndex
@@ -35,17 +35,23 @@ getWeather().then(sols => {
     updateUnits()
 
     unitToggle.addEventListener('click', () => {
-        let metricUnits = !isMetric()
-        metricRadio.checked = metricUnits
-        imperialRadio.checked = !metricUnits
-        updateUnits()
-    })
+		let metricUnits = !isMetric()
+		metricRadio.checked = metricUnits
+		imperialRadio.checked = !metricUnits
+		displaySelectedSol(sols)
+		displayPreviousSols(sols)
+		updateUnits()
+	})
 
     metricRadio.addEventListener('change', () => {
+        displaySelectedSol(sols)
+		displayPreviousSols(sols)
         updateUnits()
     })
 
     imperialRadio.addEventListener('change', () => {
+        displaySelectedSol(sols)
+		displayPreviousSols(sols)
         updateUnits()
     })
 })
@@ -54,24 +60,24 @@ function displaySelectedSol(sols) {
     const selectedSol = sols[selectedSolIndex]
     currentSolElement.innerText = selectedSol.sol
     currentDateElement.innerText = displayDate(selectedSol.date)
-    currentTempHighElement.innerText = selectedSol.maxTemp
-    currentTempLowElement.innerText = selectedSol.minTemp
-    windSpeedElement.innerText = selectedSol.windSpeed
+    currentTempHighElement.innerText = displayTemperature(selectedSol.maxTemp)
+    currentTempLowElement.innerText = displayTemperature(selectedSol.minTemp)
+    windSpeedElement.innerText = displaySpeed(selectedSol.windSpeed)
     windDirectionArrow.style.setProperty('--direction',
     `${selectedSol.windDirectionDegrees}deg`)
-    windDirectionText=innerText = 
+    windDirectionText.innerText = 
     selectedSol.windDirectionCardinal
 }
 
 function displayPreviousSols(sols) {
-    previousSolContainer.innerText= ''
-    sols.forEach((solDate, index) => {
-        const solContainer = previousSolTemplate.textContent.cloneNode(true)
+    previousSolContainer.innerHTML= ''
+    sols.forEach((solData, index) => {
+        const solContainer = previousSolTemplate.content.cloneNode(true)
         solContainer.querySelector('[data-sol]').innerText = solData.sol
-        solContainer.querySelector(['data-date']).innerText = displayDate(solData.date)
-        solContainer.querySelector('[data-temp-high').innerText = displayTemperature(solData.maxTemp)
-        solContainer.querySelector('[data-temp-low').innerText = displayTemperature(solData.minTemp)
-        solContainer.querySelector('[data-select-button').addEventListener('click'.() => {
+        solContainer.querySelector('[data-date]').innerText = displayDate(solData.date)
+        solContainer.querySelector('[data-temp-high]').innerText = displayTemperature(solData.maxTemp)
+        solContainer.querySelector('[data-temp-low]').innerText = displayTemperature(solData.minTemp)
+        solContainer.querySelector('[data-select-button]').addEventListener('click', () => {
             selectedSolIndex = index
             displaySelectedSol(sols)
         })
@@ -105,7 +111,7 @@ function displaySpeed(speed) {
 }
 
 function getWeather(){
-    fetch(API_URL)
+    return fetch(API_URL)
     .then(res => res.json())
     .then(data => {
         const {
